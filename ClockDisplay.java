@@ -60,8 +60,8 @@ public class ClockDisplay
      */
     public void setTime(int hour, int minute)
     {
-        hours.setValue(hour);
-        minutes.setValue(minute);
+        hours.setValue(hour % 24);
+        minutes.setValue(minute % 60);
         updateDisplay();
     }
 
@@ -77,8 +77,14 @@ public class ClockDisplay
      * Update the internal string that represents the display.
      */
     private void updateDisplay()
-    {
+    {   int hourValue = hours.getValue();
+        int displayHour = hours.getValue() % 12;
+        
+        if(displayHour == 0){
+            displayHour = 12;
+        }
+        String ampm = (hourValue < 12)? "AM" : "PM";
         displayString = hours.getDisplayValue() + ":" + 
-                        minutes.getDisplayValue();
+                        minutes.getDisplayValue() + ampm;
     }
 }
