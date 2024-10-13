@@ -17,7 +17,7 @@ public class ClockDisplay
     private NumberDisplay hours;
     private NumberDisplay minutes;
     private String displayString;    // simulates the actual display
-    private String ampm;
+    private String mornNight;
     
     /**
      * Constructor for ClockDisplay objects. This constructor 
@@ -27,7 +27,7 @@ public class ClockDisplay
     {
         hours = new NumberDisplay(12);
         minutes = new NumberDisplay(60);
-        ampm = "AM";
+        setTime(0, 0);
         updateDisplay();
     }
 
@@ -52,11 +52,11 @@ public class ClockDisplay
         minutes.increment();
         if(minutes.getValue() == 0) {  // it just rolled over!
             hours.increment();
-            if (hours.getValue()== 1 && ampm.equals("PM")) {
-                ampm = "AM";
+        if (hours.getValue()== 0 && mornNight.equals("PM")) {
+                mornNight = "AM";
             }
-                if (hours.getValue()== 1 && ampm.equals("AM") && hours.getValue() == 12) {
-                ampm = "pm";
+        if (hours.getValue()== 1 && mornNight.equals("AM") && hours.getValue() == 12) {
+                mornNight = "pm";
             }
         }
         updateDisplay();
@@ -67,19 +67,25 @@ public class ClockDisplay
      * minute.
      */
     public void setTime(int hour, int minute)
-    {
-        if (hour >= 12){
-            ampm = "PM";
-            if (hour > 12) {
-                hour -=12;
+    {   
+
+
+        if (hour == 0){
+            mornNight = "AM";
+            hour = 12;
+        }
+            
+        else if (hour >= 12){
+            mornNight = "PM";
+            
+            if (hour > 12){
+                hour -= 12;
             }
         }
         else {
-            ampm = "AM";
-            if (hour == 0) {
-                hour = 12;
-            }
+            mornNight = "AM";
         }
+        
         hours.setValue(hour);
         minutes.setValue(minute);
         updateDisplay();
@@ -99,6 +105,8 @@ public class ClockDisplay
     private void updateDisplay()
     {
         displayString = hours.getDisplayValue() + ":" + 
-                        minutes.getDisplayValue()+ " " + ampm;
-    }
+                        minutes.getDisplayValue()+ " " + mornNight;
+                        
 }
+} 
+
